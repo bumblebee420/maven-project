@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     stages{
@@ -12,11 +13,38 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy to Staging Environment'){
+        stage ('Deploy to Staging'){
             steps {
                 build job: 'WADeployStg'
-		build job: 'qualcheckcode'
             }
         }
+
+        stage ('Quality check for Code'){
+            steps {
+                build job: 'qualcheckcode'
+            }
+        }
+
+
+        stage ('Deploy to Production'){
+            steps{
+                timeout(time:5, unit:'DAYS'){
+                    input message:'Approve PRODUCTION Deployment?'
+                }
+
+                build job: 'WADeployPrd'
+            }
+            post {
+                success {
+                    echo 'Code deployed to Production.'
+                }
+
+                failure {
+                    echo ' Deployment failed.'
+                }
+            }
+        }
+
+
     }
 }
