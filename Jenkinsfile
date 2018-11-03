@@ -15,6 +15,7 @@ pipeline {
         stage ('Deploy to Staging Environment'){
             steps {
                 build job: 'WADeployStg'
+		build job: 'qualcheckcode'
             }
         }
     }
