@@ -4,7 +4,7 @@ stages{
 stage('Build Stage'){
 steps {
 sh 'mvn clean package'
-sh 'docker build . -t tomcatdockerapp:${env.BUILD_ID}'
+sh "docker build . -t tmctdckrapp:${env.BUILD_ID}"
 }
 }
 }
